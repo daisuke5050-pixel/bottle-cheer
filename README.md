@@ -1,2 +1,19 @@
-# bottle-cheer
-1日1通、浜辺で瓶の手紙を拾い、読んでお返しできる、匿名のエールアプリ
+# Bottle Cheer
+
+
+
+- ▶ **Try it:** https://daisuke5050-pixel.github.io/bottle-cheer/
+
+## About
+
+See the app and [IDEA.md](IDEA.md) (the idea log, in Japanese).
+
+## How it was made
+
+Built by shaping the idea together with AI (Claude) and publishing the AI-written code.
+The full conversation is in [IDEA.md](IDEA.md) (Japanese).
+
+## Files
+
+- `index.html` — the app (a single self-contained file)
+- `IDEA.md` — the idea log

@@ -1,0 +1,349 @@
+<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; base-uri 'none'; form-action 'none'">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bottle Cheer</title>
+<style>
+:root{--sky:#e6f7fd;--sea:#a8dcef;--sea2:#5fb0d0;--deep:#1f5d7a;--ink:#17485f;--sand:#f7e3b5;--paper:#fffdf5;--brown:#5b4320;--tan:#8a6a2f}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,"Hiragino Sans","Noto Sans JP",sans-serif;color:var(--ink);background:linear-gradient(#e6f7fd 0%,#cdeefa 55%,#a8dcef 100%);min-height:100vh;line-height:1.6}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #ff9f43;outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 8px;gap:8px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px;letter-spacing:.5px;color:var(--deep)}
+.logo span.b{display:inline-block;transform:rotate(-12deg);font-size:26px}
+.lang{display:flex;background:#fff;border-radius:20px;padding:3px;box-shadow:0 2px 8px #1f5d7a22}
+.lang button{border:0;background:transparent;padding:5px 12px;border-radius:16px;font-size:13px;font-weight:700;color:var(--deep)}
+.lang button[aria-pressed=true]{background:var(--deep);color:#fff}
+.tag{margin:0 0 12px;font-size:14px;color:var(--deep);opacity:.9}
+nav{display:flex;gap:6px;background:#ffffffaa;padding:5px;border-radius:16px;margin-bottom:16px}
+nav button{flex:1;border:0;background:transparent;padding:9px 4px;border-radius:12px;font-size:14px;font-weight:700;color:var(--deep)}
+nav button[aria-selected=true]{background:#fff;box-shadow:0 2px 8px #1f5d7a26}
+.panel[hidden]{display:none}
+.scene{position:relative;height:430px;border-radius:24px;overflow:hidden;background:linear-gradient(#e6f7fd 0%,#a8dcef 62%,#5fb0d0 100%);box-shadow:0 8px 24px #1f5d7a2e;text-align:center}
+.scene h2{margin:22px 0 0;font-size:18px;color:var(--deep)}
+.sun{position:absolute;top:18px;right:22px;font-size:40px}
+.cloud{position:absolute;font-size:34px;opacity:.9;animation:drift 18s linear infinite alternate}
+.waves{position:absolute;left:0;bottom:0;width:200%;height:90px;animation:wave 9s linear infinite}
+.waves.w2{bottom:-8px;opacity:.7;animation-duration:6s;animation-direction:reverse}
+.sand{position:absolute;bottom:0;left:0;right:0;height:34px;background:var(--sand);border-radius:50% 50% 0 0/100% 100% 0 0}
+.bottle{position:absolute;top:130px;left:50%;margin-left:-60px;width:120px;height:140px;border:0;background:none;font-size:100px;line-height:1;transform:rotate(-20deg);animation:bob 3.4s ease-in-out infinite}
+.bottle.opening{animation:pop .8s ease forwards}
+.hint{position:absolute;bottom:92px;width:100%;font-size:15px;color:var(--deep);font-weight:600}
+.sparkle{position:absolute;font-size:18px;animation:tw 2.4s ease-in-out infinite}
+.letter-wrap{animation:none}
+.reveal{animation:rise .7s ease both}
+.card{background:linear-gradient(#fdf3dc,#f7e3b5);border-radius:24px;padding:22px 18px;box-shadow:0 8px 24px #1f5d7a2e;text-align:center}
+.from{font-size:14px;color:var(--tan);margin-bottom:12px;font-weight:600}
+.paper{background:var(--paper);border-radius:8px;box-shadow:0 4px 12px #0002;padding:28px 18px;font-size:19px;line-height:1.85;color:var(--brown);font-family:"Hiragino Mincho ProN","Yu Mincho",Georgia,serif}
+.sub{margin:22px 0 8px;font-size:13px;color:var(--tan);font-weight:700}
+.stamps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.stamp{background:#fff;border:2px solid transparent;border-radius:22px;padding:9px 14px;font-size:15px;box-shadow:0 2px 6px #0001;transition:transform .15s}
+.stamp:hover:not(:disabled){transform:translateY(-2px)}
+.stamp[aria-pressed=true]{border-color:var(--deep);background:#e6f7fd;font-weight:700}
+.stamp:disabled{cursor:default;opacity:.55}
+.stamp[aria-pressed=true]:disabled{opacity:1}
+.thanks{margin-top:16px;background:#ffffffcc;border-radius:14px;padding:10px 12px;font-size:14px;color:var(--deep);animation:rise .5s ease both}
+.next{margin-top:16px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.chip{display:inline-block;background:var(--deep);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600}
+.note{font-size:13px;color:var(--tan);margin:0}
+.box{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 14px #1f5d7a1f}
+.box .d{font-size:12px;color:var(--deep);opacity:.75;display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;font-weight:600}
+.box p{margin:0;font-size:16px;color:var(--brown)}
+.empty{text-align:center;background:#ffffffaa;border-radius:18px;padding:30px 16px;font-size:15px}
+.pane{background:#fff;border-radius:22px;padding:18px;box-shadow:0 6px 20px #1f5d7a26}
+.pane h2{margin:0 0 4px;font-size:18px;color:var(--deep)}
+.pane p.s{margin:0 0 12px;font-size:14px;opacity:.85}
+textarea{width:100%;min-height:96px;border:2px solid var(--sea);border-radius:14px;padding:12px;font:inherit;font-size:16px;color:var(--ink);resize:vertical;background:#f7fcfe}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;gap:8px}
+.ideas{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.idea{background:#e6f7fd;border:0;border-radius:16px;padding:6px 12px;font-size:13px;color:var(--deep)}
+.btn{background:var(--deep);color:#fff;border:0;border-radius:24px;padding:12px 24px;font-size:16px;font-weight:700;box-shadow:0 4px 10px #1f5d7a44}
+.btn:hover{background:#174a62}
+.btn.ghost{background:transparent;color:var(--deep);box-shadow:none;border:2px solid var(--deep);padding:8px 16px;font-size:13px}
+.sea-strip{position:relative;height:70px;margin-top:14px;border-radius:14px;background:linear-gradient(#cdeefa,#5fb0d0);overflow:hidden}
+.drift{position:absolute;left:8%;top:12px;font-size:36px;opacity:0}
+.drift.go{animation:away 3.2s ease-in forwards}
+.err{color:#b3261e;font-weight:600}
+.status{min-height:24px;margin:12px 0 0;text-align:center;font-size:14px;color:var(--deep);font-weight:600}
+.sentlist{margin:14px 0 0;padding:0;list-style:none;font-size:14px}
+.sentlist li{padding:8px 0;border-top:1px dashed var(--sea)}
+footer{margin-top:20px;text-align:center}
+@keyframes bob{0%,100%{transform:rotate(-20deg) translateY(0)}50%{transform:rotate(-12deg) translateY(-12px)}}
+@keyframes pop{0%{transform:rotate(-20deg) scale(1)}40%{transform:rotate(15deg) scale(1.3)}100%{transform:rotate(0) scale(2.2);opacity:0}}
+@keyframes wave{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes drift{from{transform:translateX(-20px)}to{transform:translateX(40px)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes tw{0%,100%{opacity:.2}50%{opacity:1}}
+@keyframes away{0%{opacity:1;transform:translateX(0) rotate(-10deg)}100%{opacity:0;transform:translateX(250px) rotate(20deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+@media (min-width:600px){.scene{height:460px}.bottle{top:150px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo"><span class="b" aria-hidden="true">🍾</span><span>Bottle Cheer</span></div>
+  <div class="lang" data-demo="lang-switch" role="group" data-i18n-aria="langLabel">
+    <button type="button" data-lang="ja" data-demo="lang-ja" aria-pressed="false">日本語</button>
+    <button type="button" data-lang="en" data-demo="lang-en" aria-pressed="false">EN</button>
+  </div>
+</header>
+<p class="tag" data-i18n="tagline"></p>
+<nav role="tablist">
+  <button type="button" role="tab" data-tab="beach" data-demo="tab-beach" data-i18n="tabBeach"></button>
+  <button type="button" role="tab" data-tab="box" data-demo="tab-collection" data-i18n="tabBox"></button>
+  <button type="button" role="tab" data-tab="write" data-demo="tab-write" data-i18n="tabWrite"></button>
+</nav>
+
+<section class="panel" id="p-beach" data-demo="beach-area"></section>
+
+<section class="panel" id="p-box" hidden>
+  <div id="boxlist" data-demo="collection-list"></div>
+</section>
+
+<section class="panel" id="p-write" hidden>
+  <div class="pane">
+    <h2 data-i18n="writeHead"></h2>
+    <p class="s" data-i18n="writeSub"></p>
+    <textarea id="msg" maxlength="60" data-demo="write-input" data-i18n-ph="writePh" data-i18n-aria="writeAria"></textarea>
+    <div class="row"><span id="werr" class="err" role="alert"></span><span id="cnt">0 / 60</span></div>
+    <div class="ideas" id="ideas"></div>
+    <div style="text-align:center"><button type="button" class="btn" id="send" data-demo="send-bottle" data-i18n="send"></button></div>
+    <div class="sea-strip" aria-hidden="true"><span class="drift" id="drift">🍾</span></div>
+    <ul class="sentlist" id="sentlist" data-demo="sent-list"></ul>
+  </div>
+</section>
+
+<div class="status" id="status" role="status" aria-live="polite" data-demo="status"></div>
+<footer><button type="button" class="btn ghost" id="reset" data-demo="reset-day" data-i18n="resetDay"></button></footer>
+</div>
+
+<script>
+const I18N = {
+ ja:{
+  title:"Bottle Cheer",langLabel:"言語 / Language",
+  tagline:"今日の一通が、浜辺に届く",
+  tabBeach:"🏖️ 浜辺",tabBox:"📜 あつめた手紙",tabWrite:"✉️ 瓶を流す",
+  beachHead:"波打ち際で見つけた",tapHint:"瓶をタップして開けてみよう",bottleAria:"瓶を開ける",
+  from:"📜 見知らぬ誰かからの手紙",replyHead:"この手紙に返す",
+  replied:"{s} を、波が送り主のもとへ運んでいったよ。",
+  already:"今日の瓶は、もう拾ったよ。また明日、波が届けてくれるよ。",
+  next:"⏳ 次の瓶まで {h}時間{m}分",
+  opened:"瓶を拾いました。ゆっくり読んでね。",
+  stampSent:"お返しを送りました。",
+  boxEmpty:"まだ手紙はありません。浜辺で今日の瓶を拾ってみよう。",
+  noReply:"返信なし",
+  writeHead:"瓶にエールを入れて流そう",writeSub:"名前は書かなくて大丈夫。誰かの浜辺に届きます。",
+  writePh:"例：今日もおつかれさま。あなたはえらい。",writeAria:"エールのメッセージ",
+  send:"🌊 海へ流す",
+  ideas:["今日もおつかれさま！","きっと大丈夫だよ","あなたの味方です"],
+  errEmpty:"ひとことだけでも書いてみてね。",
+  sentOk:"瓶を海へ流しました。誰かの浜辺へ旅立ちます。",
+  sentLabel:"🌊 漂流中",sentTitle:"流した瓶",
+  resetDay:"🔄 デモ：次の日にする",resetDone:"次の日になりました。新しい瓶が届いています。",
+  stamps:{thanks:"🙏 ありがとう",genki:"💛 元気出た",smile:"😊 笑顔になった",fight:"🌊 がんばる"},
+  letters:[
+   "今日もここまで来たあなたへ。\nそれだけで、\nじゅうぶんすごいよ。",
+   "完璧じゃなくて大丈夫。\n今日の一歩は、\nちゃんと前に進んでるよ。",
+   "疲れたら、深呼吸。\n波の音みたいに、\nゆっくりでいいよ。",
+   "あなたのがんばりを、\nちゃんと見ている人が\nいるからね。",
+   "今日あなたが一度でも笑えたなら、\nそれだけで\n今日は大成功。",
+   "空を見上げてみて。\n今日もきっと、\nあなたの味方だよ。",
+   "うまくいかない日も、\nあなたの大切な一日。\n明日は新しい波が来るよ。",
+   "おつかれさま。\nあたたかい飲み物で、\nひと息ついてね。",
+   "誰かと比べなくていいよ。\nあなたのペースが、\n一番いいペース。",
+   "名前も知らないけれど、\nあなたの幸せを\n願っているよ。",
+   "小さな「できた」を、\n今日も大事にしてね。",
+   "眠れない夜も、\n朝はちゃんと\n来るからね。"
+  ]
+ },
+ en:{
+  title:"Bottle Cheer",langLabel:"Language / 言語",
+  tagline:"Today's one letter washes up on your beach",
+  tabBeach:"🏖️ Beach",tabBox:"📜 My letters",tabWrite:"✉️ Send one",
+  beachHead:"Found at the water's edge",tapHint:"Tap the bottle to open it",bottleAria:"Open the bottle",
+  from:"📜 A letter from a stranger",replyHead:"Send a reply",
+  replied:"The waves carried your {s} back to the sender.",
+  already:"You already picked up today's bottle. The waves will bring another tomorrow.",
+  next:"⏳ Next bottle in {h}h {m}m",
+  opened:"You picked up a bottle. Take your time reading.",
+  stampSent:"Your reply was sent.",
+  boxEmpty:"No letters yet. Pick up today's bottle on the beach.",
+  noReply:"No reply",
+  writeHead:"Put a cheer in a bottle",writeSub:"No name needed. It will wash up on someone's beach.",
+  writePh:"e.g. Good work today. You're doing great.",writeAria:"Your cheer message",
+  send:"🌊 Float it out to sea",
+  ideas:["Good work today!","You'll be okay","I'm on your side"],
+  errEmpty:"Even one short line is enough.",
+  sentOk:"Your bottle is drifting out to sea, toward someone's beach.",
+  sentLabel:"🌊 Drifting",sentTitle:"Bottles you sent",
+  resetDay:"🔄 Demo: skip to next day",resetDone:"A new day! A new bottle has arrived.",
+  stamps:{thanks:"🙏 Thank you",genki:"💛 Cheered up",smile:"😊 Made me smile",fight:"🌊 I'll try"},
+  letters:[
+   "To you, who made it this far today.\nThat alone\nis already enough.",
+   "You don't have to be perfect.\nToday's step\nstill moved you forward.",
+   "When you're tired, breathe.\nGo slowly,\nlike the sound of the waves.",
+   "Someone is watching\nhow hard you try,\nand they are proud.",
+   "If you smiled even once today,\nthen today\nwas a big success.",
+   "Look up at the sky.\nIt's on your side\ntoday, too.",
+   "Even a rough day\nis a day that matters.\nA new wave comes tomorrow.",
+   "Good work today.\nTake a breath with\na warm drink.",
+   "No need to compare.\nYour pace\nis the best pace.",
+   "I don't know your name,\nbut I'm wishing\nyou happiness.",
+   "Treasure your small\n\"I did it\" moments\ntoday, too.",
+   "Even on sleepless nights,\nthe morning\nwill come."
+  ]
+ }
+};
+const STAMP_IDS=["thanks","genki","smile","fight"];
+let lang="en";
+(function(){
+  let l=null;
+  if(window.APP_LANG==="ja"||window.APP_LANG==="en")l=window.APP_LANG;
+  if(!l){try{const q=new URLSearchParams(location.search).get("lang");if(q==="ja"||q==="en")l=q}catch(e){}}
+  if(!l){try{const s=localStorage.getItem("lang");if(s==="ja"||s==="en")l=s}catch(e){}}
+  lang=l||"en";
+})();
+const T=(k,p)=>{let s=I18N[lang][k];if(typeof s==="string"&&p)for(const x in p)s=s.replace("{"+x+"}",p[x]);return s};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const br=s=>esc(s).replace(/\n/g,"<br>");
+
+function ds(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function today(){return ds(new Date())}
+function fmtDate(s){const [y,m,d]=s.split("-").map(Number);try{return new Date(y,m-1,d).toLocaleDateString(lang==="ja"?"ja-JP":"en-US",{month:"short",day:"numeric"})}catch(e){return s}}
+function daysAgo(n){const d=new Date();d.setDate(d.getDate()-n);return ds(d)}
+
+let S=null;
+function seed(){return {history:[{date:daysAgo(1),idx:1,reply:"thanks"},{date:daysAgo(2),idx:4,reply:"smile"},{date:daysAgo(4),idx:8,reply:"genki"}],sent:[]}}
+function load(){
+  try{const r=localStorage.getItem("bottlecheer");if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.history))return {history:o.history,sent:o.sent||[]}}}catch(e){}
+  return seed();
+}
+function save(){try{localStorage.setItem("bottlecheer",JSON.stringify(S))}catch(e){}}
+S=load();
+const entry=()=>S.history.find(h=>h.date===today());
+
+let lastStatus=null, justOpened=false, curTab="beach", opening=false;
+const $=id=>document.getElementById(id);
+function say(key,p){lastStatus=key?{key,p}:null;$("status").textContent=key?T(key,p):""}
+
+function renderBeach(){
+  const el=$("p-beach"),e=entry();
+  if(!e){
+    el.innerHTML=`<div class="scene" data-demo="beach-scene">
+      <div class="sun" aria-hidden="true">☀️</div>
+      <div class="cloud" style="top:60px;left:30px" aria-hidden="true">☁️</div>
+      <div class="cloud" style="top:110px;right:60px;font-size:26px;animation-duration:24s" aria-hidden="true">☁️</div>
+      <h2>${esc(T("beachHead"))}</h2>
+      <span class="sparkle" style="top:170px;left:22%" aria-hidden="true">✨</span>
+      <span class="sparkle" style="top:250px;right:20%;animation-delay:1s" aria-hidden="true">✨</span>
+      <button type="button" class="bottle" id="bottle" data-demo="pick-bottle" aria-label="${esc(T("bottleAria"))}">🍾</button>
+      <div class="hint">${esc(T("tapHint"))}</div>
+      <svg class="waves" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 Q75 5 150 40 T300 40 T450 40 T600 40 T750 40 T900 40 T1050 40 T1200 40 V90 H0Z" fill="#7ec8e3" opacity=".6"/></svg>
+      <svg class="waves w2" viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50 Q75 20 150 50 T300 50 T450 50 T600 50 T750 50 T900 50 T1050 50 T1200 50 V90 H0Z" fill="#fff" opacity=".65"/></svg>
+      <div class="sand" aria-hidden="true"></div>
+    </div>`;
+    $("bottle").addEventListener("click",openBottle);
+    return;
+  }
+  const L=I18N[lang].letters[e.idx];
+  const stamps=STAMP_IDS.map(id=>`<button type="button" class="stamp" data-stamp="${id}" data-demo="stamp-${id}" aria-pressed="${e.reply===id}" ${e.reply?"disabled":""}>${esc(I18N[lang].stamps[id])}</button>`).join("");
+  el.innerHTML=`<div class="card${justOpened?" reveal":""}" data-demo="letter-card">
+    <div class="from">${esc(T("from"))}</div>
+    <div class="paper" data-demo="letter-text">${br(L)}</div>
+    <div class="sub">${esc(T("replyHead"))}</div>
+    <div class="stamps">${stamps}</div>
+    ${e.reply?`<div class="thanks" data-demo="reply-message">💌 ${esc(T("replied",{s:I18N[lang].stamps[e.reply]}))}</div>`:""}
+    <div class="next"><span class="chip" id="cd" data-demo="countdown"></span><p class="note">${esc(T("already"))}</p></div>
+  </div>`;
+  justOpened=false;
+  el.querySelectorAll(".stamp").forEach(b=>b.addEventListener("click",()=>{
+    const en=entry();if(!en||en.reply)return;
+    en.reply=b.dataset.stamp;save();renderBeach();renderBox();say("stampSent");
+  }));
+  updateCountdown();
+}
+function updateCountdown(){
+  const c=$("cd");if(!c)return;
+  const n=new Date(),m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1);
+  const mins=Math.max(1,Math.ceil((m-n)/60000));
+  c.textContent=T("next",{h:Math.floor(mins/60),m:mins%60});
+}
+function openBottle(){
+  if(opening||entry())return;
+  opening=true;
+  $("bottle").classList.add("opening");
+  setTimeout(()=>{
+    const got=new Set(S.history.map(h=>h.idx)),n=I18N.ja.letters.length;
+    let c=[];for(let i=0;i<n;i++)if(!got.has(i))c.push(i);
+    if(!c.length)c=[...Array(n).keys()];
+    const idx=c[Math.floor(Math.random()*c.length)];
+    S.history.unshift({date:today(),idx,reply:null});
+    save();justOpened=true;opening=false;
+    renderBeach();renderBox();say("opened");
+  },800);
+}
+function renderBox(){
+  const el=$("boxlist");
+  if(!S.history.length){el.innerHTML=`<div class="empty">${esc(T("boxEmpty"))}</div>`;return}
+  const list=[...S.history].sort((a,b)=>a.date<b.date?1:-1);
+  el.innerHTML=list.map(h=>`<div class="box"><div class="d"><span>${esc(fmtDate(h.date))}</span><span>${h.reply?esc(I18N[lang].stamps[h.reply]):esc(T("noReply"))}</span></div><p>${br(I18N[lang].letters[h.idx].replace(/\n/g,""))}</p></div>`).join("");
+}
+function renderIdeas(){
+  $("ideas").innerHTML=I18N[lang].ideas.map((t,i)=>`<button type="button" class="idea" data-demo="idea-${i+1}">${esc(t)}</button>`).join("");
+  $("ideas").querySelectorAll(".idea").forEach((b,i)=>b.addEventListener("click",()=>{
+    $("msg").value=I18N[lang].ideas[i];updCnt();$("werr").textContent="";$("msg").focus();
+  }));
+}
+function renderSent(){
+  const ul=$("sentlist");
+  if(!S.sent.length){ul.innerHTML="";return}
+  ul.innerHTML=`<li><strong>${esc(T("sentTitle"))}</strong></li>`+S.sent.slice(0,4).map(s=>`<li>${esc(s.text)} <span style="opacity:.7;font-size:12px">· ${esc(fmtDate(s.date))} · ${esc(T("sentLabel"))}</span></li>`).join("");
+}
+function updCnt(){$("cnt").textContent=$("msg").value.length+" / 60"}
+
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.title=T("title");
+  document.querySelectorAll("[data-i18n]").forEach(e=>e.textContent=T(e.dataset.i18n));
+  document.querySelectorAll("[data-i18n-ph]").forEach(e=>e.placeholder=T(e.dataset.i18nPh));
+  document.querySelectorAll("[data-i18n-aria]").forEach(e=>e.setAttribute("aria-label",T(e.dataset.i18nAria)));
+  document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
+  if(!opening)renderBeach();
+  renderBox();renderIdeas();renderSent();
+  if($("werr").dataset.k)$("werr").textContent=T($("werr").dataset.k);
+  say(lastStatus&&lastStatus.key,lastStatus&&lastStatus.p);
+}
+function setLang(l){lang=l;try{localStorage.setItem("lang",l)}catch(e){}applyLang()}
+document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+
+function showTab(t){
+  curTab=t;
+  ["beach","box","write"].forEach(k=>{$("p-"+k).hidden=k!==t});
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+$("msg").addEventListener("input",()=>{updCnt();$("werr").textContent="";$("werr").dataset.k=""});
+$("send").addEventListener("click",()=>{
+  const v=$("msg").value.trim();
+  if(!v){$("werr").dataset.k="errEmpty";$("werr").textContent=T("errEmpty");$("msg").focus();return}
+  S.sent.unshift({date:today(),text:v});save();
+  $("msg").value="";updCnt();
+  const d=$("drift");d.classList.remove("go");void d.offsetWidth;d.classList.add("go");
+  renderSent();say("sentOk");
+});
+$("reset").addEventListener("click",()=>{
+  S.history=S.history.filter(h=>h.date!==today());save();
+  opening=false;justOpened=false;
+  renderBeach();renderBox();showTab("beach");say("resetDone");
+});
+setInterval(updateCountdown,20000);
+showTab("beach");updCnt();applyLang();
+</script>
+</body>
+</html>
